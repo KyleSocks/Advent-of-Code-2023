@@ -15,7 +15,7 @@ class puzzle:
     def hasHorizontalReflection(self):
         temp = self.lines.copy()
         reflection_indices = []
-        for i in range(1, len(temp)-1):
+        for i in range(1, len(temp)):
             start = temp[0:i]
             end = temp[-1:i-1:-1]
             if len(start) > len(end):
@@ -42,7 +42,7 @@ class puzzle:
         first = temp[0]
         reflection_indices = []
         has_reflection = False
-        for i in range(1, len(first)-1):
+        for i in range(1, len(first)):
             start = first[0:i]
             end = first[-1:i-1:-1]
             if len(start) > len(end):
@@ -52,19 +52,25 @@ class puzzle:
             if start == end:
                 reflection_indices.append(i)
                 has_reflection = True
-
+        #print(reflection_indices)
+        to_remove = []
         if has_reflection:
             for t in temp[1:]:
                 for j in reflection_indices:
                     start = t[0:j]
                     end = t[-1:j-1:-1]
+                    #print(j, start, end)
                     if len(start) > len(end):
                         start = start[len(start)-len(end):]
                     if len(end) > len(start):
                         end = end[len(end)-len(start):]
                     if start != end:
-                        reflection_indices.remove(j)
+                        #print('removing ', j)
+                        to_remove.append(j)
+                        #reflection_indices.remove(j)
 
+        #print('***************************')
+        reflection_indices = [x for x in reflection_indices if x not in to_remove]
         if len(reflection_indices):
             for line in self.lines.copy():
                 print(line[0:reflection_indices[0]], '|', line[reflection_indices[0]:-1])
